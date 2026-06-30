@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -164,5 +169,87 @@ public class Library {
         foundStudent.issuedBooks.remove(returnBook);
 
         System.out.println("Book returned successfully!");
+    }
+    void savebooks() throws IOException {
+        FileWriter fw=new FileWriter("savedbooks.txt");
+        for(Book b: books){
+            fw.write(
+                    b.bkid+","+b.bkName+","+b.bkAuthor+","+b.isAvail + "\n"
+            );
+        }
+        fw.close();
+        System.out.println("Books saved successfully!!");
+    }
+    void savestudents() throws IOException{
+        FileWriter fw=new FileWriter("students.txt");
+        for(Student s:stds){
+            fw.write(
+              s.stId+","+s.stName+","
+            );
+            for(int i=0;i<s.issuedBooks.size();i++){
+                fw.write(String.valueOf(s.issuedBooks.get(i).bkid));
+                fw.write("|");
+            }
+            fw.write("\n");
+        }
+
+        fw.close();
+        System.out.println("Saved students data!!");
+    }
+
+    void loadbooks() throws IOException{
+        try{
+            BufferedReader bf=new BufferedReader(new FileReader("savedbooks.txt"));
+            String line;
+            while((line=bf.readLine())!=null){
+                String[] data=line.split(",");
+                int bkid=Integer.parseInt(data[0]);
+                String bkName=data[1];
+                String bkAuthor=data[2];
+                boolean isavail=Boolean.parseBoolean(data[3]);
+                Book b=new Book(bkid,bkName,bkAuthor,isavail);
+                books.add(b);
+            }
+            bf.close();
+            System.out.println("Books loaded!!");
+        }
+        catch(IOException e){
+            System.out.println("Books cannot be loaded!!");
+        }
+    }
+    void loadstudent(){
+        try{
+            BufferedReader bf=new BufferedReader(new FileReader("students.txt"));
+            String line;
+            while((line=bf.readLine())!=null){
+                String[] data=line.split(",");
+                int stid=Integer.parseInt(data[0]);
+                String stName=data[1];
+                Student s=new Student(stid,stName);
+                if (data.length > 2 && !data[2].isEmpty()) {
+
+                    String[] issued = data[2].split("\\|");
+
+                    for (String bookId : issued) {
+
+                        int bkid = Integer.parseInt(bookId);
+
+                        for (Book b : books) {
+
+                            if (b.bkid == bkid) {
+
+                                s.issuedBooks.add(b);
+                                break;
+                            }
+                        }
+                    }
+                }
+                stds.add(s);
+            }
+            bf.close();
+            System.out.println("Students loaded succesfully!!");
+        }catch (IOException e){
+            System.out.println("Students data cant be loaded!!");
+        }
     }
 }

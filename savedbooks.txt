@@ -1,0 +1,7 @@
+101,Java,Poonam Bari,false
+102,Engg Maths,PV Shah,true
+103,Engg Chemistry,Dr Swapna Patil,true
+104,Physics,RD Sharma,false
+105,C Programming,Dennis Ritchie,true
+106,BEE,Misbah Khan,true
+107,Engg Graphics,Prof Mathew T,true

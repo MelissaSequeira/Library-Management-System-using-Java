@@ -1,10 +1,13 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
-public static void main(String args[]){
+public static void main(String args[]) throws IOException {
     Scanner sc=new Scanner(System.in);
     Library lib=new Library();
+    lib.loadbooks();
+    lib.loadstudent();
     while(true){
     System.out.println("Library Management System");
     System.out.println("=============================");
@@ -49,6 +52,8 @@ public static void main(String args[]){
                 break;
             case 9:
                 System.out.println("Thank you Visit again");
+                lib.savebooks();
+                lib.savestudents();
                 System.exit(0);
                 break;
 
